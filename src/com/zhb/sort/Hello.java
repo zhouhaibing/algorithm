@@ -110,6 +110,73 @@ public class Hello {
 	}
 	
 	
+	// 无序大数组中寻找中位数
+	// 1. 对数组进行排序， 快速排序 nlgn
+	
+	// 2. 类似于快速排序的二分法， 如果选取的中间点正好处于中间
+	public static double median2(int[] array) {
+	    if(array==null || array.length==0) return 0;
+	    int left = 0;
+	    int right = array.length-1;
+	    int midIndex = right >> 1;
+	    int index = -1;
+	    while(index != midIndex){
+	        index = partition(array, left, right);
+	        if(index < midIndex) left = index + 1;
+	        else if (index > midIndex) right = index - 1;
+	        else break;
+	    }
+	    return array[index];
+	}
+
+	public static int partition(int[] array, int left, int right) {
+	    if(left > right) return -1;
+	    int pos = right;
+	    right--;
+	    while(left <= right){
+	        while(left<pos && array[left]<=array[pos]) left++;
+	        while(right>left && array[right]>array[pos]) right--;
+	        if(left >= right) break;
+	        swap(array, left, right);
+	    }
+
+	    swap(array, left, pos);
+	    return left;
+	}
+	
+	public static void swap(int[] array, int a, int b){
+		int temp = array[a];
+		array[a] = array[b];
+		array[b] = temp;
+	}
+	
+	public static int partition2(int[] array, int left, int right) {
+		if (left > right) return -1;
+		int key = array[left];
+		int i = left;
+		int j = right;
+		while(i < j){
+			while(i < j && array[j] > key){
+				j--;
+			}
+			if(i<j){
+				array[i] = array[j];
+			}
+			while(i<j && array[i] < key){
+				i++;
+			}
+			if(i<j){
+				array[j] = array[i];
+			}
+		}
+		array[i] = key;
+		return i;
+	}
+	
+	// 最小堆的实现
+	
+	
+	
 	
 	public static void main(String[] args){
 		int[] dd = {5,7,3,8,1,9,20,4,111, 23, 34};
@@ -121,6 +188,10 @@ public class Hello {
 		for(int i : dd){
 			System.out.print(i + " ");
 		}
+		System.out.println();
+		long startTime = System.nanoTime();
+		System.out.println(median2(dd));
+		System.out.println(System.nanoTime() - startTime);
 	}
 	
 

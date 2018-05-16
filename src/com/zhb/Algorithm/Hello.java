@@ -22,10 +22,92 @@ public class Hello {
 		int[] sum = new int[]{};
 		//sum[0] = 3;
 		System.out.println( " " + sum.length);*/
+		
+		/*int[] cs = new int[]{3,8,1,34,2,54,19};
+		int[] vs = new int[]{120,102,159,135,103,199,110};
+		
+		packageQuickSort(cs, vs, 0, 6); // two dismen sort
+		
+		for(int i=0;i<7;i++){
+			System.out.print(cs[i] + " ");
+		}
+		System.out.println();
+		for(int i=0;i<7;i++){
+			System.out.print(vs[i] + " ");
+		}*/
+		
+		packageSelect();
+		
 	}
 	
 	
 	
+	
+	// 0/1背包问题
+	// https://blog.csdn.net/xp731574722/article/details/70766804
+	public static void packageSelect(){
+		int c = 12;
+		int n = 6;
+		int[] v = new int[]{8, 10, 6, 3, 7, 2};
+		int[] w = new int[]{4, 6, 2, 2, 5, 1};
+		int[][] m = new int[n+1][c+1]; // 面对第i件商品时，背包容量为j时所获得的最大价值。
+		for(int i=1;i<=n;i++){
+			for(int j=1;j<=c;j++){
+				if(j >= w[i-1]){
+					int preMax = m[i-1][j-w[i-1]];
+					if(preMax + v[i-1] > m[i-1][j]){
+						m[i][j] = preMax + v[i-1];
+					} else {
+						m[i][j] = m[i-1][j];
+					}
+				} else {
+					m[i][j] = m[i-1][j];
+				}
+			}
+		}
+		
+		for(int i=0;i<n;i++){
+			for(int j=0;j<=c;j++){
+				System.out.print(m[i][j] + " ");
+			}
+			System.out.println();
+		}
+		
+	}
+	
+	// 多重背包问题
+	
+	
+	public static void packageQuickSort(int[] objs, int[] v, int start, int end){
+		int i = start;
+		int j = end;
+		int objsKey = objs[i];
+		int vkey = v[i];
+		while(i<j){
+			while(i<j && objsKey > objs[j]){
+				j--;
+			}
+			if(i<j){
+				objs[i] = objs[j];
+				v[i] = v[j];
+			}
+			while(i<j && objsKey < objs[i]){
+				i++;
+			}
+			if(i<j){
+				objs[j] = objs[i];
+				v[j] = v[i];
+			}
+		}
+		objs[i] = objsKey;
+		v[i] = vkey;
+		if(i - start > 0){
+			packageQuickSort(objs, v, start, i - 1);
+		}
+		if(end - j > 0){
+			packageQuickSort(objs, v, j + 1, end);
+		}	
+	}
 	
 	
 	//剪绳子   贪心算法  O(1) O(1)  
